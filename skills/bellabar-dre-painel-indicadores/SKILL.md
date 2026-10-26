@@ -70,3 +70,13 @@ As faixas de Comidas, Bebidas e Hortifruti são referência de mercado, não do 
    - Terminar com uma única pergunta oferecendo aprofundar.
    - Só gerar painel HTML/artifact se o Richard pedir ("gera o painel", "manda em HTML"). Nesse caso: cabeçalho com o mês, gráfico de faturamento diário (se houver), 8 cards (% grande, R$, barra com a meta e semáforo), bloco Não Operacional e a tabela das linhas do DRE usadas. Atualizar o mesmo painel do mês em vez de criar outro.
 6. **Histórico**: acrescentar ao registro do mês em `/areas/bellabar-dre-historico.md` as colunas CMV Comidas %, CMV Bebidas %, Couvert R$, Comissão R$, CMO+Eventual %, Hortifruti R$/% (atualizar a linha se o mês já existir). Sem pedir confirmação.
+
+## Padrão visual do painel (aprovado pelo Richard — manter sempre)
+
+O painel HTML segue sempre o modelo de `assets/painel-modelo.html` (painel de outubro/2026). Não redesenhar: reaproveitar o mesmo HTML/CSS/JS e trocar só os dados.
+
+- Formato: Artifact do tipo **Dashboard**, um por mês, com título "Indicadores Bellabar <Mês>". Os dados vão em datasets (CSV do DRE com colunas `linha,descricao,grupo,valor` e CSV de faturamento `data,valor`); os números nunca ficam escritos no HTML.
+- Ordem das seções: cabeçalho (título serifado, subtítulo "DRE parcial/fechado", frase-resumo e chips verde/amarelo/vermelho) → gráfico de faturamento diário (barras + linha sobreposta com pontos + média tracejada + tooltip) → grade de cartões dos indicadores → bloco Não Operacional (3 resultados grandes + barras vermelhas por item + nota do ajuste do aluguel) → tabela das linhas do DRE.
+- Cartão: faixa colorida no topo pelo status, nome em caixa alta pequena, % grande em serifa, R$ embaixo, base do %, barra de progresso com marca da meta, status + "meta < X%" e uma observação curta.
+- Cores só pelos tokens do tema (verde/amarelo/vermelho de status; barras acima da média em destaque e as demais neutras), funcionando em claro e escuro.
+- Ao atualizar um mês já publicado, editar o mesmo painel (mesmo link), não criar outro.

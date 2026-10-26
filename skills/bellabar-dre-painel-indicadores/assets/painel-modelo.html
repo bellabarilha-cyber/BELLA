@@ -1,0 +1,220 @@
+<style>
+.bp{display:flex;flex-direction:column;gap:var(--cds-gap-lg);font-family:var(--font-anthropic-sans)}
+.bp-head h1{font-family:var(--font-anthropic-serif);font-weight:400;font-size:var(--cds-font-size-title);margin:0}
+.bp-sub{color:var(--color-fg-muted);font-size:var(--cds-font-size-caption);margin-top:var(--cds-gap-xs)}
+.bp-take{font-size:var(--cds-font-size-body);margin-top:var(--cds-gap-sm);max-width:60ch}
+.bp-chips{display:flex;gap:var(--cds-gap-sm);flex-wrap:wrap;margin-top:var(--cds-gap-sm)}
+.bp-chip{font-size:var(--cds-font-size-caption);padding:2px 10px;border-radius:999px;border:1px solid var(--color-border-line)}
+.bp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,15rem),1fr));gap:var(--cds-gap-md)}
+.bp-card{background:var(--color-panel);border:1px solid var(--color-border-line);border-radius:var(--cds-radius);padding:var(--cds-pad-lg);display:flex;flex-direction:column;gap:var(--cds-gap-xs);min-width:0;border-top:3px solid var(--color-border-line)}
+.bp-card[data-st=ok]{border-top-color:var(--color-ok)}
+.bp-card[data-st=warn]{border-top-color:var(--color-warn)}
+.bp-card[data-st=bad]{border-top-color:var(--color-bad)}
+.bp-name{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted);text-transform:uppercase;letter-spacing:.05em}
+.bp-pct{font-family:var(--font-anthropic-serif);font-weight:400;font-size:var(--cds-font-size-title);font-variant-numeric:tabular-nums;line-height:1.1}
+.bp-val{font-variant-numeric:tabular-nums;font-size:var(--cds-font-size-body)}
+.bp-base{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted)}
+.bp-bar{position:relative;height:8px;border-radius:4px;background:var(--cds-chart-grid);margin-top:var(--cds-gap-sm)}
+.bp-fill{position:absolute;left:0;top:0;bottom:0;border-radius:4px;background:var(--cds-chart-muted)}
+.bp-card[data-st=ok] .bp-fill{background:var(--color-ok)}
+.bp-card[data-st=warn] .bp-fill{background:var(--color-warn)}
+.bp-card[data-st=bad] .bp-fill{background:var(--color-bad)}
+.bp-goal{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--color-fg)}
+.bp-meta{display:flex;justify-content:space-between;gap:var(--cds-gap-sm);font-size:var(--cds-font-size-caption);color:var(--color-fg-muted)}
+.bp-st{font-weight:500}
+.bp-card[data-st=ok] .bp-st{color:var(--color-ok)}
+.bp-card[data-st=warn] .bp-st{color:var(--color-warn)}
+.bp-card[data-st=bad] .bp-st{color:var(--color-bad)}
+.bp-note{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted);margin-top:var(--cds-gap-xs)}
+.bp-panel{background:var(--color-panel);border:1px solid var(--color-border-line);border-radius:var(--cds-radius);padding:var(--cds-pad-lg)}
+.bp-panel h2{font-size:var(--cds-font-size-heading);font-weight:var(--cds-font-weight-medium);margin:0 0 var(--cds-gap-xs)}
+.bp-wrap{overflow-x:auto}
+.bp-panel table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:var(--cds-font-size-body)}
+.bp-panel th,.bp-panel td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--color-border-line)}
+.bp-panel th{font-weight:500;color:var(--color-fg-muted);font-size:var(--cds-font-size-caption)}
+.bp-panel td.n,.bp-panel th.n{text-align:right}
+.bp-res{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,11rem),1fr));gap:var(--cds-gap-md);margin:var(--cds-gap-md) 0}
+.bp-res div{display:flex;flex-direction:column;gap:2px}
+.bp-res b{font-family:var(--font-anthropic-serif);font-weight:400;font-size:var(--cds-font-size-title);font-variant-numeric:tabular-nums}
+.bp-res b.neg{color:var(--color-bad)}
+.bp-list{display:flex;flex-direction:column;gap:var(--cds-gap-sm)}
+.bp-row{display:grid;grid-template-columns:minmax(7rem,10rem) 1fr auto;gap:var(--cds-gap-sm);align-items:center;font-size:var(--cds-font-size-body);font-variant-numeric:tabular-nums}
+.bp-row .bp-bar{margin:0}
+.bp-row span:last-child{text-align:right;min-width:7.5rem}
+.bp-chart{position:relative;min-height:240px;margin-top:var(--cds-gap-md)}
+.bp-tip{position:absolute;pointer-events:none;background:var(--cds-surface-popover);border:1px solid var(--cds-border);border-radius:var(--cds-radius);box-shadow:var(--cds-shadow-popover);padding:var(--cds-pad-xs) var(--cds-pad-sm);font-size:var(--cds-font-size-caption);white-space:nowrap;font-variant-numeric:tabular-nums}
+.bp-tip span{color:var(--cds-text-secondary);display:block}
+[data-dash-source-state=empty]{color:transparent}
+[data-dash-source-state=refreshing]{opacity:.5;transition:opacity var(--cds-dur-slow)}
+</style>
+<div class="bp">
+  <header class="bp-head">
+    <h1 id="titulo">Indicadores Bellabar · outubro 2026</h1>
+    <div class="bp-sub">DRE parcial, até 26/10 · percentuais sobre Receita Líquida, salvo indicação</div>
+    <p class="bp-take" id="takeaway" data-source="indicadores">—</p>
+    <div class="bp-chips" id="chips"></div>
+  </header>
+  <section class="bp-panel" id="faturamento">
+    <h2>Faturamento diário</h2>
+    <div class="bp-sub" id="fat-sub" data-source="faturamento">—</div>
+    <div class="bp-chart" id="fat-chart" data-source="faturamento"></div>
+  </section>
+  <section class="bp-grid" id="cards" data-source="indicadores"></section>
+  <section class="bp-panel" id="nao-operacional">
+    <h2>Não operacional</h2>
+    <div class="bp-sub">Dívida e pró-labore, em % da Receita Líquida</div>
+    <div class="bp-res" id="res"></div>
+    <div class="bp-list" id="nop" data-source="dre"></div>
+  </section>
+  <section class="bp-panel" id="linhas">
+    <h2>Linhas do DRE usadas</h2>
+    <div class="bp-sub">Valores lançados no DRE de outubro até agora</div>
+    <div class="bp-wrap"><table data-source="dre" data-row-key="linha">
+      <thead><tr><th data-field="descricao">Linha</th><th class="n" data-field="valor">R$</th></tr></thead>
+      <tbody id="tb"></tbody>
+    </table></div>
+  </section>
+</div>
+<script>
+dash.calc('indicadores', {
+  title: 'Indicadores do mês',
+  description: 'Os 7 indicadores do painel, em R$ e % da base, com status contra a meta.',
+  inputs: ['dre'],
+  fn: (dre) => {
+    const v = {}; dre.forEach(r => { v[r.linha] = Number(r.valor); });
+    const rb = v.receita_bruta, rl = v.receita_liquida;
+    const st = (p, verde, amarelo) => p < verde ? 'ok' : p <= amarelo ? 'warn' : 'bad';
+    const ind = (id, nome, valor, base, baseNome, verde, amarelo, nota) => {
+      const pct = valor / base;
+      return {id, nome, valor, pct, base: baseNome, meta: verde, status: verde == null ? 'info' : st(pct, verde, amarelo), nota};
+    };
+    const comissao = v.servico_10 + v.comissao_socio;
+    const servicoPct = v.servico_10 / rb;
+    return [
+      ind('cmv', 'CMV total', v.cmv, rl, 'da Receita Líquida', 0.32, 0.35, 'Meta abaixo de 32%.'),
+      ind('cmv_comidas', 'CMV Comidas', v.materia_prima, rl, 'da Receita Líquida', 0.33, 0.36, 'Inclui R$ ' + v.cmv_sem_classificar.toLocaleString('pt-BR', {minimumFractionDigits: 2}) + ' ainda sem classificar.'),
+      ind('cmv_bebidas', 'CMV Bebidas', v.bebidas, rl, 'da Receita Líquida', 0.30, 0.35, 'Valor baixo: parte das bebidas pode estar no "sem classificar".'),
+      ind('couvert', 'Couvert Artístico', v.couvert, rb, 'da Receita Bruta', null, null, 'Sem meta definida.'),
+      {id: 'comissao', nome: 'Comissão', valor: comissao, pct: comissao / rb, base: 'da Receita Bruta', meta: null,
+       status: comissao / rb < 0.08 ? 'warn' : 'ok',
+       nota: 'Serviço 10%: ' + (servicoPct * 100).toFixed(1).replace('.', ',') + '% · Sócio: ' + (v.comissao_socio / rb * 100).toFixed(1).replace('.', ',') + '% da RB.'},
+      ind('cmo', 'CMO + CMO Eventual', v.pessoal + v.cmo_eventual, rl, 'da Receita Líquida', 0.35, 0.38, 'Pessoal fixo + extras. Sem pró-labore.'),
+      ind('horti', 'Hortifruti', v.horti, rl, 'da Receita Líquida', 0.04, 0.06, (v.horti / v.materia_prima * 100).toFixed(1).replace('.', ',') + '% do CMV Comidas.'),
+      ind('anuncios', 'Anúncios', v.anuncios, rl, 'da Receita Líquida', null, null, 'Cada R$ 1 em anúncio para R$ ' + (rb / v.anuncios).toFixed(0) + ' de faturamento no mês.')
+    ];
+  }
+});
+const brl = (n) => n.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'});
+const pc = (n) => (n * 100).toFixed(1).replace('.', ',') + '%';
+const rotulo = {ok: 'Na meta', warn: 'Atenção', bad: 'Fora da meta', info: 'Acompanhar'};
+dash.onData(() => {
+  const d = dash.data('indicadores');
+  const cards = document.getElementById('cards');
+  const take = document.getElementById('takeaway');
+  const chips = document.getElementById('chips');
+  cards.textContent = ''; chips.textContent = '';
+  if (d.status !== 'ok') { take.textContent = '—'; }
+  else {
+    const rows = d.data;
+    const n = (s) => rows.filter(r => r.status === s).length;
+    const ok = n('ok'), warn = n('warn'), bad = n('bad');
+    const pior = rows.filter(r => r.status === 'warn' || r.status === 'bad').map(r => r.nome).join(', ');
+    take.textContent = bad ? `${bad} indicador(es) fora da meta. Atenção em: ${pior}.` : `Nenhum indicador fora da meta. Pontos de atenção: ${pior || 'nenhum'}.`;
+    [['ok', ok, 'na meta', '--color-ok'], ['warn', warn, 'em atenção', '--color-warn'], ['bad', bad, 'fora da meta', '--color-bad']].forEach(([k, c, t, col]) => {
+      const s = document.createElement('span'); s.className = 'bp-chip'; s.style.color = `var(${col})`; s.textContent = `${c} ${t}`; chips.appendChild(s);
+    });
+    rows.forEach(r => {
+      const c = document.createElement('article'); c.className = 'bp-card'; c.dataset.st = r.status; c.id = 'ind-' + r.id;
+      const w = 'id=' + encodeURIComponent(r.id);
+      const el = (tag, cls, txt, field) => { const e = document.createElement(tag); e.className = cls; e.textContent = txt; if (field) { e.dataset.source = 'indicadores'; e.dataset.field = field; e.dataset.where = w; } c.appendChild(e); return e; };
+      el('div', 'bp-name', r.nome, 'nome');
+      el('div', 'bp-pct', pc(r.pct), 'pct');
+      el('div', 'bp-val', brl(r.valor), 'valor');
+      el('div', 'bp-base', r.base);
+      const bar = document.createElement('div'); bar.className = 'bp-bar';
+      const max = Math.max((r.meta || r.pct) * 1.5, r.pct * 1.1);
+      const f = document.createElement('div'); f.className = 'bp-fill'; f.style.width = Math.min(100, r.pct / max * 100) + '%'; bar.appendChild(f);
+      if (r.meta) { const g = document.createElement('div'); g.className = 'bp-goal'; g.style.left = (r.meta / max * 100) + '%'; bar.appendChild(g); }
+      c.appendChild(bar);
+      const m = document.createElement('div'); m.className = 'bp-meta';
+      const a = document.createElement('span'); a.className = 'bp-st'; a.textContent = rotulo[r.status];
+      const b = document.createElement('span'); b.textContent = r.meta ? 'meta < ' + pc(r.meta) : '';
+      m.append(a, b); c.appendChild(m);
+      el('div', 'bp-note', r.nota);
+      cards.appendChild(c);
+    });
+  }
+  const fd = dash.data('faturamento');
+  const box = document.getElementById('fat-chart'), sub = document.getElementById('fat-sub');
+  box.textContent = '';
+  if (fd.status !== 'ok') { sub.textContent = '—'; }
+  else {
+    const rows = fd.data.map(r => ({data: r.data, dia: new Date(r.data + 'T12:00:00'), valor: Number(r.valor)}));
+    const total = d3.sum(rows, r => r.valor);
+    const abertos = rows.filter(r => r.valor > 0);
+    const media = total / abertos.length;
+    const top = d3.greatest(rows, r => r.valor);
+    const fdia = (d) => d.toLocaleDateString('pt-BR', {weekday: 'short', day: '2-digit', month: '2-digit'});
+    sub.textContent = `${rows.length} dias · total ${brl(total)} · média ${brl(media)} por dia aberto (${abertos.length} dias) · melhor dia ${fdia(top.dia)}`;
+    const W = box.clientWidth || 600, H = 240, m = {t: 12, r: 8, b: 26, l: 48};
+    const x = d3.scaleBand(rows.map(r => r.data), [m.l, W - m.r]).padding(0.25);
+    const y = d3.scaleLinear([0, d3.max(rows, r => r.valor) * 1.08], [H - m.b, m.t]).nice();
+    const svg = d3.select(box).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`);
+    const ticks = y.ticks(4);
+    svg.append('g').selectAll('line').data(ticks).join('line').attr('x1', m.l).attr('x2', W - m.r).attr('y1', y).attr('y2', y).attr('stroke', 'var(--cds-chart-grid)');
+    svg.append('g').selectAll('text').data(ticks).join('text').attr('x', m.l - 6).attr('y', y).attr('dy', '0.32em').attr('text-anchor', 'end').attr('fill', 'var(--color-fg-muted)').style('font-size', 'var(--cds-font-size-caption)').text(d => d3.format('~s')(d).replace('k', ' mil'));
+    const step = W < 480 ? 5 : W < 760 ? 2 : 1;
+    svg.append('g').selectAll('text').data(rows.filter((r, i) => i % step === 0)).join('text').attr('x', r => x(r.data) + x.bandwidth() / 2).attr('y', H - 8).attr('text-anchor', 'middle').attr('fill', 'var(--color-fg-muted)').style('font-size', 'var(--cds-font-size-caption)').text(r => r.dia.getDate());
+    const bars = svg.append('g').selectAll('rect').data(rows).join('rect').attr('x', r => x(r.data)).attr('width', x.bandwidth()).attr('y', r => y(r.valor)).attr('height', r => Math.max(0, y(0) - y(r.valor))).attr('rx', 4).attr('fill', r => r.valor >= media ? dash.colors[0] : 'var(--cds-chart-muted)');
+    const cx = r => x(r.data) + x.bandwidth() / 2;
+    svg.append('path').datum(rows).attr('fill', 'none').attr('stroke', dash.colors[1]).attr('stroke-width', 2).attr('stroke-linecap', 'round').attr('stroke-linejoin', 'round').attr('pointer-events', 'none').attr('d', d3.line().x(cx).y(r => y(r.valor)));
+    svg.append('g').attr('pointer-events', 'none').selectAll('circle').data(rows).join('circle').attr('cx', cx).attr('cy', r => y(r.valor)).attr('r', 3).attr('fill', dash.colors[1]);
+    svg.append('line').attr('x1', m.l).attr('x2', W - m.r).attr('y1', y(media)).attr('y2', y(media)).attr('stroke', 'var(--cds-chart-reference)').attr('stroke-dasharray', '4 4');
+    svg.append('text').attr('x', W - m.r).attr('y', y(media) - 5).attr('text-anchor', 'end').attr('fill', 'var(--color-fg-muted)').style('font-size', 'var(--cds-font-size-caption)').text('média ' + brl(media));
+    const tip = document.createElement('div'); tip.className = 'bp-tip'; tip.hidden = true; box.appendChild(tip);
+    bars.on('pointerenter pointermove', (ev, r) => {
+      tip.hidden = false; tip.textContent = '';
+      const a = document.createElement('span'); a.textContent = fdia(r.dia);
+      tip.append(a, document.createTextNode(r.valor ? brl(r.valor) : 'Fechado / sem venda'));
+      const [px, py] = d3.pointer(ev, box);
+      tip.style.left = Math.min(px + 10, box.clientWidth - tip.offsetWidth - 4) + 'px'; tip.style.top = Math.max(0, py - 44) + 'px';
+      bars.attr('opacity', b => b === r ? 1 : 0.55);
+    }).on('pointerleave', () => { tip.hidden = true; bars.attr('opacity', 1); });
+  }
+  const t = dash.data('dre');
+  const res = document.getElementById('res'), nop = document.getElementById('nop');
+  res.textContent = ''; nop.textContent = '';
+  if (t.status === 'ok') {
+    const v = {}; t.data.forEach(r => { v[r.linha] = Number(r.valor); });
+    const rl = v.receita_liquida;
+    [['resultado_operacional', 'Resultado operacional'], ['nao_operacional_total', 'Despesas não operacionais'], ['resultado_nao_operacional', 'Resultado não operacional']].forEach(([k, nome]) => {
+      const d = document.createElement('div');
+      const a = document.createElement('span'); a.className = 'bp-name'; a.textContent = nome;
+      const b = document.createElement('b'); b.textContent = brl(v[k]); b.dataset.source = 'dre'; b.dataset.field = 'valor'; b.dataset.where = 'linha=' + k;
+      if (k === 'nao_operacional_total') b.className = 'neg';
+      const c = document.createElement('span'); c.className = 'bp-base'; c.textContent = pc(v[k] / rl) + ' da RL';
+      d.append(a, b, c); res.appendChild(d);
+    });
+    const itens = t.data.filter(r => r.grupo === 'nao_operacional');
+    const max = d3.max(itens, r => Number(r.valor));
+    itens.forEach(r => {
+      const row = document.createElement('div'); row.className = 'bp-row';
+      const a = document.createElement('span'); a.textContent = r.descricao;
+      const bar = document.createElement('div'); bar.className = 'bp-bar';
+      const f = document.createElement('div'); f.className = 'bp-fill'; f.style.width = (Number(r.valor) / max * 100) + '%'; f.style.background = 'var(--color-bad)'; bar.appendChild(f);
+      const c = document.createElement('span'); c.textContent = brl(Number(r.valor)) + ' · ' + pc(Number(r.valor) / rl);
+      c.dataset.source = 'dre'; c.dataset.field = 'valor'; c.dataset.where = 'linha=' + r.linha;
+      row.append(a, bar, c); nop.appendChild(row);
+    });
+    const n = document.createElement('div'); n.className = 'bp-note';
+    n.textContent = 'O Resultado Não Operacional segue a fórmula do DRE, que soma de volta o aluguel (R$ 19.600). Sem esse ajuste, o mês fecha em ' + brl(v.resultado_operacional - v.nao_operacional_total) + '.';
+    nop.appendChild(n);
+  } const tb = document.getElementById('tb'); tb.textContent = '';
+  if (t.status === 'ok') t.data.filter(r => r.grupo === 'indicadores').forEach(r => {
+    const tr = document.createElement('tr'); tr.dataset.key = r.linha;
+    const a = document.createElement('td'); a.textContent = r.descricao;
+    const b = document.createElement('td'); b.className = 'n'; b.textContent = brl(Number(r.valor));
+    tr.append(a, b); tb.appendChild(tr);
+  });
+});
+</script>
