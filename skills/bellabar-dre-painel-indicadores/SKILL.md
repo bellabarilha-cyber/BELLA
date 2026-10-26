@@ -1,6 +1,6 @@
 ---
 name: bellabar-dre-painel-indicadores
-description: Subskill da bellabar-dre-analysis. Monta o Painel de Indicadores do Bellabar a partir do DRE (imagem, print ou planilha) com 7 indicadores fixos: CMV, CMV Comidas, CMV Bebidas, Couvert Artístico, Comissão, CMO + CMO Eventual e Hortifruti, em R$ e em % com semáforo de meta e comparação com o mês anterior. Use quando o Richard pedir "painel de indicadores", "painel do DRE", "indicadores do mês", "como tá o CMV de comida/bebida", "quanto foi o couvert", "quanto gastei de hortifruti", "CMO do mês", ou mandar um DRE querendo só os indicadores-chave em vez da análise completa.
+description: Subskill da bellabar-dre-analysis. Monta o Painel de Indicadores do Bellabar a partir do DRE (imagem, print ou planilha) com 7 indicadores fixos: CMV, CMV Comidas, CMV Bebidas, Couvert Artístico, Comissão, CMO + CMO Eventual e Hortifruti, em R$ e em % com semáforo, mais o bloco Não Operacional e o gráfico de faturamento diário, de meta e comparação com o mês anterior. Use quando o Richard pedir "painel de indicadores", "painel do DRE", "indicadores do mês", "como tá o CMV de comida/bebida", "quanto foi o couvert", "quanto gastei de hortifruti", "CMO do mês", ou mandar um DRE querendo só os indicadores-chave em vez da análise completa.
 ---
 
 # Painel de Indicadores do DRE — Bellabar
@@ -22,6 +22,22 @@ Derivada de `bellabar-dre-analysis`. Usa a mesma leitura do DRE (estrutura, regi
 \* Se o DRE não separar receita de comidas e bebidas, pedir ao Richard o relatório de vendas por grupo do PDV (mesmo usado na `bellabar-vendas-analise`). Sem ele, calcular sobre a Receita Líquida e **avisar** que o % fica subestimado.
 
 Se o DRE não abrir CMV Comidas / Bebidas / Hortifruti, perguntar **uma vez** se ele quer mandar as notas/compras do mês (a `controle-custos-insumos-bellabar` já classifica as notas) — não inventar a divisão.
+
+## Bloco Não Operacional
+
+Sempre que o DRE trouxer Despesas Não Operacionais, mostrar:
+- Resultado Operacional, total de Despesas Não Operacionais e Resultado Não Operacional (R$ e % da RL).
+- Cada item (Empréstimo, Juros, Ação Trabalhista, Pró-labore 1 e 2, Parcelamentos) em R$ e % da RL, do maior para o menor.
+- Se a fórmula do DRE somar de volta o aluguel na linha "(-) Aluguel", avisar e mostrar também o resultado sem esse ajuste (Resultado Operacional − Despesas Não Operacionais).
+
+## Faturamento diário
+
+Quando o Richard mandar o faturamento dia a dia (lista de valores em sequência, um por dia a partir do dia 1):
+- Atribuir as datas em ordem (1º valor = dia 1 do mês do DRE).
+- Somar e comparar com a Receita Bruta do DRE. Se bater, dizer; se não, mostrar a diferença.
+- Gráfico de barras simples, uma barra por dia: dias acima da média em destaque, demais em cor neutra, linha tracejada da média dos dias com venda (dias com R$ 0,00 contam como fechados e ficam fora da média).
+- Legenda curta acima do gráfico: total, média por dia aberto, nº de dias abertos e melhor dia.
+- No painel HTML, o gráfico fica logo abaixo do cabeçalho, antes dos cartões.
 
 ## Metas (semáforo)
 
@@ -50,5 +66,5 @@ As faixas de Comidas, Bebidas e Hortifruti são referência de mercado, não do 
    - Tabela: Indicador | R$ | % | Meta | Status (🟢🟡🔴) | Δ vs mês anterior.
    - No máximo 3 bullets de ação para os vermelhos/amarelos (ex.: "CMV Bebidas subiu 4 p.p. — checar preço da Heineken nas últimas notas").
    - Terminar com uma única pergunta oferecendo aprofundar.
-   - Só gerar painel HTML/artifact se o Richard pedir ("gera o painel", "manda em HTML"). Nesse caso: 7 cards (valor R$ grande, % e semáforo), mês no topo, cores de status fixas.
+   - Só gerar painel HTML/artifact se o Richard pedir ("gera o painel", "manda em HTML"). Nesse caso: cabeçalho com o mês, gráfico de faturamento diário (se houver), 7 cards (% grande, R$, barra com a meta e semáforo), bloco Não Operacional e a tabela das linhas do DRE usadas. Atualizar o mesmo painel do mês em vez de criar outro.
 6. **Histórico**: acrescentar ao registro do mês em `/areas/bellabar-dre-historico.md` as colunas CMV Comidas %, CMV Bebidas %, Couvert R$, Comissão R$, CMO+Eventual %, Hortifruti R$/% (atualizar a linha se o mês já existir). Sem pedir confirmação.
