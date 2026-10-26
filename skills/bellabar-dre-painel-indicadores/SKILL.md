@@ -45,7 +45,7 @@ Confirmar as metas vigentes em `/areas/bellabar-operations-system.md` (GASS). Re
 
 | Indicador | Verde | Amarelo | Vermelho |
 |-----------|-------|---------|----------|
-| CMV total | < 35% | 35–38% | > 38% |
+| CMV total | < 32% | 32–35% | > 35% |
 | CMV Comidas | < 33% | 33–36% | > 36% |
 | CMV Bebidas | < 30% | 30–35% | > 35% |
 | Couvert Artístico | repasse ≈ cobrado | — | pago > arrecadado |
