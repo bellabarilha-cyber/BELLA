@@ -1,6 +1,6 @@
 ---
 name: bellabar-dre-painel-indicadores
-description: Subskill da bellabar-dre-analysis. Monta o Painel de Indicadores do Bellabar a partir do DRE (imagem, print ou planilha) com 7 indicadores fixos: CMV, CMV Comidas, CMV Bebidas, Couvert Artístico, Comissão, CMO + CMO Eventual e Hortifruti, em R$ e em % com semáforo, mais o bloco Não Operacional e o gráfico de faturamento diário, de meta e comparação com o mês anterior. Use quando o Richard pedir "painel de indicadores", "painel do DRE", "indicadores do mês", "como tá o CMV de comida/bebida", "quanto foi o couvert", "quanto gastei de hortifruti", "CMO do mês", ou mandar um DRE querendo só os indicadores-chave em vez da análise completa.
+description: Subskill da bellabar-dre-analysis. Monta o Painel de Indicadores do Bellabar a partir do DRE (imagem, print ou planilha) com 7 indicadores fixos: CMV, CMV Comidas, CMV Bebidas, Couvert Artístico, Comissão, CMO + CMO Eventual e Hortifruti, em R$ e em % com semáforo de meta e comparação com o mês anterior, mais o bloco Não Operacional e o gráfico de faturamento diário. Use quando o Richard pedir "painel de indicadores", "painel do DRE", "indicadores do mês", "como tá o CMV de comida/bebida", "quanto foi o couvert", "quanto gastei de hortifruti", "CMO do mês", ou mandar um DRE querendo só os indicadores-chave em vez da análise completa.
 ---
 
 # Painel de Indicadores do DRE — Bellabar
