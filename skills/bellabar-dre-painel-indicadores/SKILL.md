@@ -35,7 +35,7 @@ Sempre que o DRE trouxer Despesas Não Operacionais, mostrar:
 Quando o Richard mandar o faturamento dia a dia (lista de valores em sequência, um por dia a partir do dia 1):
 - Atribuir as datas em ordem (1º valor = dia 1 do mês do DRE).
 - Somar e comparar com a Receita Bruta do DRE. Se bater, dizer; se não, mostrar a diferença.
-- Gráfico de barras simples, uma barra por dia: dias acima da média em destaque, demais em cor neutra, linha tracejada da média dos dias com venda (dias com R$ 0,00 contam como fechados e ficam fora da média).
+- Gráfico de barras simples, uma barra por dia: dias acima da média em destaque, demais em cor neutra, linha tracejada da média dos dias com venda, e uma linha com pontos sobreposta às barras ligando o valor de cada dia (dias com R$ 0,00 contam como fechados e ficam fora da média).
 - Legenda curta acima do gráfico: total, média por dia aberto, nº de dias abertos e melhor dia.
 - No painel HTML, o gráfico fica logo abaixo do cabeçalho, antes dos cartões.
 
