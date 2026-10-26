@@ -15,7 +15,7 @@ Derivada de `bellabar-dre-analysis`. Usa a mesma leitura do DRE (estrutura, regi
 | 2 | **CMV Comidas** | Parte do CMV de insumos de cozinha (matéria prima, proteínas, mercearia, hortifruti) | Receita de Comidas* |
 | 3 | **CMV Bebidas** | Parte do CMV de bebidas (AMBEV, Coca-Cola, Heineken, destilados, insumos de bar) | Receita de Bebidas* |
 | 4 | **Couvert Artístico** | Deduções → Couvert Artístico | Receita Bruta |
-| 5 | **Comissão** | Deduções → Serviço 10% + Comissão Sócio (mostrar as duas linhas e o total) | Receita Bruta |
+| 5 | **Comissão** | Deduções → Serviço 10% + Comissão Sócio (mostrar as duas linhas e o total). O 10% é dividido 2/3 equipe (Serviço 10%) e 1/3 sócio (Comissão Sócio): avaliar sempre pelo total | Receita Bruta |
 | 6 | **CMO + CMO Eventual** | Despesas com Pessoal (salários + encargos: VT, Cesta, INSS, FGTS, 13º) + Custo de Mão de Obra Eventual (extras/freelas) | Receita Líquida |
 | 7 | **Hortifruti** | Compras de hortifruti (linha própria no DRE ou soma das notas de hortifruti do mês) | Receita Líquida e % do CMV Comidas |
 
@@ -49,7 +49,7 @@ Confirmar as metas vigentes em `/areas/bellabar-operations-system.md` (GASS). Re
 | CMV Comidas | < 33% | 33–36% | > 36% |
 | CMV Bebidas | < 30% | 30–35% | > 35% |
 | Couvert Artístico | repasse ≈ cobrado | — | pago > arrecadado |
-| Comissão | = 10% do serviço | — | ≠ 10% (checar lançamento) |
+| Comissão (Serviço + Sócio) | ≥ 8% da RB | < 8% (checar lançamento) | — |
 | CMO + CMO Eventual | < 35% | 35–38% | > 38% |
 | Hortifruti | < 4% da RL | 4–6% | > 6% |
 
