@@ -1,0 +1,54 @@
+---
+name: bellabar-dre-painel-indicadores
+description: Subskill da bellabar-dre-analysis. Monta o Painel de Indicadores do Bellabar a partir do DRE (imagem, print ou planilha) com 7 indicadores fixos: CMV, CMV Comidas, CMV Bebidas, Couvert Artístico, Comissão, CMO + CMO Eventual e Hortifruti, em R$ e em % com semáforo de meta e comparação com o mês anterior. Use quando o Richard pedir "painel de indicadores", "painel do DRE", "indicadores do mês", "como tá o CMV de comida/bebida", "quanto foi o couvert", "quanto gastei de hortifruti", "CMO do mês", ou mandar um DRE querendo só os indicadores-chave em vez da análise completa.
+---
+
+# Painel de Indicadores do DRE — Bellabar
+
+Derivada de `bellabar-dre-analysis`. Usa a mesma leitura do DRE (estrutura, regime de competência, histórico), mas a entrega é um **painel enxuto de 7 indicadores**. Para análise completa (ponto de equilíbrio, reserva de caixa, despesas fixas, dívida), usar a skill-mãe.
+
+## Os 7 indicadores
+
+| # | Indicador | De onde sai no DRE | Base do % |
+|---|-----------|--------------------|-----------|
+| 1 | **CMV** (total) | Custos Variáveis → CMV (Compra de Matéria Prima + Fornecedores de Venda Direta + Apoio) | Receita Líquida |
+| 2 | **CMV Comidas** | Parte do CMV de insumos de cozinha (matéria prima, proteínas, mercearia, hortifruti) | Receita de Comidas* |
+| 3 | **CMV Bebidas** | Parte do CMV de bebidas (AMBEV, Coca-Cola, Heineken, destilados, insumos de bar) | Receita de Bebidas* |
+| 4 | **Couvert Artístico** | Deduções → Couvert Artístico | Receita Bruta |
+| 5 | **Comissão** | Deduções → Serviço 10% + Comissão Sócio (mostrar as duas linhas e o total) | Receita Bruta |
+| 6 | **CMO + CMO Eventual** | Despesas com Pessoal (salários + encargos: VT, Cesta, INSS, FGTS, 13º) + Custo de Mão de Obra Eventual (extras/freelas) | Receita Líquida |
+| 7 | **Hortifruti** | Compras de hortifruti (linha própria no DRE ou soma das notas de hortifruti do mês) | Receita Líquida e % do CMV Comidas |
+
+\* Se o DRE não separar receita de comidas e bebidas, pedir ao Richard o relatório de vendas por grupo do PDV (mesmo usado na `bellabar-vendas-analise`). Sem ele, calcular sobre a Receita Líquida e **avisar** que o % fica subestimado.
+
+Se o DRE não abrir CMV Comidas / Bebidas / Hortifruti, perguntar **uma vez** se ele quer mandar as notas/compras do mês (a `controle-custos-insumos-bellabar` já classifica as notas) — não inventar a divisão.
+
+## Metas (semáforo)
+
+Confirmar as metas vigentes em `/areas/bellabar-operations-system.md` (GASS). Referência se não houver valor lá:
+
+| Indicador | Verde | Amarelo | Vermelho |
+|-----------|-------|---------|----------|
+| CMV total | < 35% | 35–38% | > 38% |
+| CMV Comidas | < 33% | 33–36% | > 36% |
+| CMV Bebidas | < 30% | 30–35% | > 35% |
+| Couvert Artístico | repasse ≈ cobrado | — | pago > arrecadado |
+| Comissão | = 10% do serviço | — | ≠ 10% (checar lançamento) |
+| CMO + CMO Eventual | < 35% | 35–38% | > 38% |
+| Hortifruti | < 4% da RL | 4–6% | > 6% |
+
+As faixas de Comidas, Bebidas e Hortifruti são referência de mercado, não do GASS — dizer isso no primeiro painel e oferecer ajustar.
+
+## Passo a passo
+
+1. **Extrair** os valores do DRE (mesma leitura da skill-mãe, passo 1). Anotar Receita Bruta, Receita Líquida e, se houver, receita por grupo.
+2. **Calcular** os 7 indicadores em R$ e % na base da tabela acima. Conferir que CMV Comidas + CMV Bebidas ≈ CMV total; se a diferença passar de 2%, mostrar a diferença como "CMV não classificado".
+3. **Competência**: extras e compras entram no mês em que foram gerados, não pagos (regra da skill-mãe, passo 5).
+4. **Comparar** com o mês anterior em `/areas/bellabar-dre-historico.md` (variação em R$ e p.p.). Se for reenvio do mesmo mês, comparar com a versão anterior da conversa.
+5. **Apresentar** no chat:
+   - Uma linha de destaque: quantos indicadores no verde/amarelo/vermelho e o pior deles.
+   - Tabela: Indicador | R$ | % | Meta | Status (🟢🟡🔴) | Δ vs mês anterior.
+   - No máximo 3 bullets de ação para os vermelhos/amarelos (ex.: "CMV Bebidas subiu 4 p.p. — checar preço da Heineken nas últimas notas").
+   - Terminar com uma única pergunta oferecendo aprofundar.
+   - Só gerar painel HTML/artifact se o Richard pedir ("gera o painel", "manda em HTML"). Nesse caso: 7 cards (valor R$ grande, % e semáforo), mês no topo, cores de status fixas.
+6. **Histórico**: acrescentar ao registro do mês em `/areas/bellabar-dre-historico.md` as colunas CMV Comidas %, CMV Bebidas %, Couvert R$, Comissão R$, CMO+Eventual %, Hortifruti R$/% (atualizar a linha se o mês já existir). Sem pedir confirmação.
